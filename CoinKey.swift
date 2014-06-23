@@ -7,7 +7,7 @@
 
 import Foundation
 
-class CoinKey {
+struct CoinKey {
     let privateKey: UInt32 // Will need to be bigger...
     
     let publicAddress : String
@@ -21,9 +21,8 @@ class CoinKey {
         self.publicAddress = "Wrong"
     }
     
-    class func createRandom () -> CoinKey {
+    static func createRandom () -> CoinKey {
         return CoinKey(privateKey: arc4random())
     }
-    
     
 }
