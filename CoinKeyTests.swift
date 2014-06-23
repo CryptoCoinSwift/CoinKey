@@ -6,7 +6,7 @@
 //
 
 import XCTest
-import CryptoCoinSwift
+import CryptoCoin
 
 class CoinKeyTests: XCTestCase {
     
@@ -31,6 +31,13 @@ class CoinKeyTests: XCTestCase {
         let coinKey2 = CoinKey.createRandom();
         
         XCTAssertNotEqual(coinKey1.privateKey, coinKey2.privateKey, "Two random private keys can't be equal");
+        
+    }
+    
+    func testPublicAddress() {
+        let coinKey = CoinKey(privateKey: 1); // 1184cd2cdd640ca42cfc3a091c51d549b2f016d454b2774019c2b2d2e08529fd
+        
+        XCTAssertEqual(coinKey.publicAddress, "16UjcYNBG9GTK4uq2f7yYEbuifqCzoLMGS", "Public address matching private key");
         
     }
     
