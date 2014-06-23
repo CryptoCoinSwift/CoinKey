@@ -34,6 +34,13 @@ class CoinKeyTests: XCTestCase {
         
     }
     
+    func testPrivateKeyDescriptionIsHexString() {
+        let coinKey = CoinKey(privateKey: 1)
+        
+        XCTAssertEqual(coinKey.privateKey.description , "1", "Hex string");
+
+    }
+    
     func testPublicAddress() {
         let coinKey = CoinKey(privateKey: 1); // 1184cd2cdd640ca42cfc3a091c51d549b2f016d454b2774019c2b2d2e08529fd
         
