@@ -8,7 +8,7 @@
 import Foundation
 
 class CoinKey {
-    let privateKey: Int // Will need to be bigger...
+    let privateKey: UInt32 // Will need to be bigger...
     
     let publicAddress : String
     
@@ -16,13 +16,13 @@ class CoinKey {
         return NSString(format:"%2X", self.privateKey) as String
     }
     
-    init(privateKey: Int) {
+    init(privateKey: UInt32) {
         self.privateKey = privateKey
         self.publicAddress = "Wrong"
     }
     
     class func createRandom () -> CoinKey {
-        return CoinKey(privateKey: 1)
+        return CoinKey(privateKey: arc4random())
     }
     
     
