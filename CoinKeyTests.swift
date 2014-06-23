@@ -35,9 +35,9 @@ class CoinKeyTests: XCTestCase {
     }
     
     func testPrivateKeyHexString() {
-        let coinKey = CoinKey(privateKey: 1)
+        let coinKey = CoinKey(privateKey: 0x1F)
         
-        XCTAssertEqual(coinKey.privateKeyHexString , "1", "Hex string");
+        XCTAssertEqual(coinKey.privateKeyHexString , "1F", "Hex string");
 
     }
     

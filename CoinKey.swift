@@ -13,7 +13,7 @@ class CoinKey {
     let publicAddress : String
     
     var privateKeyHexString: String {
-        return self.privateKey.description
+        return NSString(format:"%2X", self.privateKey) as String
     }
     
     init(privateKey: Int) {
