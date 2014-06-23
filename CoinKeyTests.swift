@@ -34,10 +34,10 @@ class CoinKeyTests: XCTestCase {
         
     }
     
-    func testPrivateKeyDescriptionIsHexString() {
+    func testPrivateKeyHexString() {
         let coinKey = CoinKey(privateKey: 1)
         
-        XCTAssertEqual(coinKey.privateKey.description , "1", "Hex string");
+        XCTAssertEqual(coinKey.privateKeyHexString , "1", "Hex string");
 
     }
     

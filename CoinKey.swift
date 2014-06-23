@@ -12,6 +12,10 @@ class CoinKey {
     
     let publicAddress : String
     
+    var privateKeyHexString: String {
+        return self.privateKey.description
+    }
+    
     init(privateKey: Int) {
         self.privateKey = privateKey
         self.publicAddress = "Wrong"
