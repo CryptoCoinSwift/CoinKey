@@ -1,6 +1,6 @@
 //
-//  BitBTests.swift
-//  BitBTests
+//  CoinKeyTests.swift
+//  Crypto Coin Swift
 //
 //  Created by Sjors Provoost on 23-06-14.
 //

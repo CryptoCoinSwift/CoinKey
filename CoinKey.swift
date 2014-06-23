@@ -1,6 +1,6 @@
 //
 //  CoinKey.swift
-//  BitB
+//  Crypto Coin Swift
 //
 //  Created by Sjors Provoost on 23-06-14.
 //
