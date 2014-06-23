@@ -8,9 +8,14 @@
 import Foundation
 
 class CoinKey {
-    var privateKey: Int? // Will need to be bigger...
+    let privateKey: Int // Will need to be bigger...
     
-    init() {
-        privateKey = nil
+    init(privateKey: Int) {
+        self.privateKey = privateKey
     }
+    
+    class func createRandom () -> CoinKey {
+        return CoinKey(privateKey: 1)
+    }
+    
 }

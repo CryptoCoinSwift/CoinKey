@@ -20,28 +20,19 @@ class CoinKeyTests: XCTestCase {
         super.tearDown()
     }
     
-    func testExample() {
-        // This is an example of a functional test case.
-        let coinKey = CoinKey()
+    func testInitWithPrivateKey() {
+        let coinKey = CoinKey(privateKey: 1)
         
-        coinKey.privateKey = 1;
-        
-        if let pK = coinKey.privateKey {
-            XCTAssertEqual(pK , 1, "Private key correct");
-
-        } else {
-            XCTFail("Pimary key not set");
-        }
-        
-        
-        XCTAssert(true, "Pass")
+        XCTAssertEqual(coinKey.privateKey , 1, "Private key correct");
     }
     
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measureBlock() {
-            // Put the code you want to measure the time of here.
-        }
+    func testCreateRandom() {
+        let coinKey1 = CoinKey.createRandom();
+        let coinKey2 = CoinKey.createRandom();
+        
+        XCTAssertNotEqual(coinKey1.privateKey, coinKey2.privateKey, "Two random private keys can't be equal");
+        
     }
+    
     
 }
