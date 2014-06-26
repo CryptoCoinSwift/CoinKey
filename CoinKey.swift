@@ -5,7 +5,7 @@
 //  Created by Sjors Provoost on 23-06-14.
 //
 
-import CryptoCoin
+//import CryptoCoin
 
 class CoinKey : ECKey {
     var publicAddress : String {
