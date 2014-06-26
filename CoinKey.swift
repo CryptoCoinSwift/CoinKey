@@ -8,21 +8,21 @@
 import Foundation
 
 struct CoinKey {
-    let privateKey: UInt32 // Will need to be bigger...
+    let privateKey: UInt256
     
     let publicAddress : String
     
     var privateKeyHexString: String {
-        return NSString(format:"%2X", self.privateKey) as String
+        return privateKey.toHexString
     }
     
-    init(privateKey: UInt32) {
+    init(privateKey: UInt256) {
         self.privateKey = privateKey
         self.publicAddress = "Wrong"
     }
     
     static func createRandom () -> CoinKey {
-        return CoinKey(privateKey: arc4random())
+        return CoinKey(privateKey: UInt256(mostSignificantOf8UInt32First: [arc4random_uniform(UInt32.max), arc4random_uniform(UInt32.max),arc4random_uniform(UInt32.max),arc4random_uniform(UInt32.max),arc4random_uniform(UInt32.max),arc4random_uniform(UInt32.max),arc4random_uniform(UInt32.max),arc4random_uniform(UInt32.max)]))
     }
     
 }
