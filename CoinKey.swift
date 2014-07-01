@@ -5,10 +5,14 @@
 //  Created by Sjors Provoost on 23-06-14.
 //
 
-//import CryptoCoin
+// Assuming all cryptocurrencies use Secp256k1. Move domain selection to subclass if that's not the case.
 
 class CoinKey : ECKey {
+    init(_ privateKeyHex: String) {
+        super.init(UInt256(hexStringValue: privateKeyHex), ECurve(domain: .Secp256k1))
+    }
+    
     var publicAddress : String {
-        return "Wrong"
+        return "Wrong" // 
     }
 }
