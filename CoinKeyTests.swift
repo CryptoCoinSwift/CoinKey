@@ -21,10 +21,9 @@ class CoinKeyTests: XCTestCase {
     }
         
     func testPublicAddress() {
-        let coinKey = CoinKey(privateKey: 1); // 1184cd2cdd640ca42cfc3a091c51d549b2f016d454b2774019c2b2d2e08529fd
+        let coinKey = CoinKey("1184cd2cdd640ca42cfc3a091c51d549b2f016d454b2774019c2b2d2e08529fd")
         
-        XCTAssertEqual(coinKey.publicAddress, "16UjcYNBG9GTK4uq2f7yYEbuifqCzoLMGS", "Public address matching private key");
-        
+        XCTAssertEqual(coinKey.publicAddress, "16UjcYNBG9GTK4uq2f7yYEbuifqCzoLMGS", coinKey.publicAddress)
     }
     
     
