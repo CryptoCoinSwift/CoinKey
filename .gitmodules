@@ -1,0 +1,3 @@
+[submodule "ECKey"]
+	path = ECKey
+	url = git@github.com:CryptoCoinSwift/ECKey.git
