@@ -7,8 +7,8 @@
 
 // Assuming all cryptocurrencies use Secp256k1. Move domain selection to subclass if that's not the case.
 
-import ECurve
-import UInt256
+import ECurveMac
+import UInt256Mac
 
 class CoinKey : ECKey {
     init(_ privateKeyHex: String) {

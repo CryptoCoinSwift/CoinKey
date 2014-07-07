@@ -6,7 +6,7 @@
 //
 
 import XCTest
-import CryptoCoin
+import CryptoCoinMac
 
 class CoinKeyTests: XCTestCase {
     
