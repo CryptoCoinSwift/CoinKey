@@ -1,3 +1,6 @@
 [submodule "ECKey"]
 	path = ECKey
 	url = git@github.com:CryptoCoinSwift/ECKey.git
+[submodule "RIPEMD-Swift"]
+	path = RIPEMD-Swift
+	url = git@github.com:CryptoCoinSwift/RIPEMD-Swift.git
