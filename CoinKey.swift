@@ -9,17 +9,28 @@
 
 import ECurveMac
 import UInt256Mac
+import RIPEMDmac
 
 class CoinKey : ECKey {
-    let prefix: UInt8
+    let privateKeyPrefix: UInt8
+    let publicKeyPrefix: UInt8
+
     
-    init(_ privateKeyHex: String, prefix: UInt8) {
-        self.prefix = prefix
-        super.init(UInt256(hexStringValue: privateKeyHex), ECurve(domain: .Secp256k1))
+    init(_ privateKeyHex: String, privateKeyPrefix: UInt8, publicKeyPrefix: UInt8, skipPublicKeyGeneration: Bool = true) {
+        self.privateKeyPrefix = privateKeyPrefix
+        self.publicKeyPrefix = publicKeyPrefix
+        super.init(UInt256(hexStringValue: privateKeyHex), ECurve(domain: .Secp256k1), skipPublicKeyGeneration: skipPublicKeyGeneration)
     }
     
-    var prefixString: String {
-        let prefixHexString = String(NSString(format:"%2X", prefix))
+    init(_ privateKeyHex: String, _ publicKeyHex: String, privateKeyPrefix: UInt8, publicKeyPrefix: UInt8) {
+        self.privateKeyPrefix = privateKeyPrefix
+        self.publicKeyPrefix = publicKeyPrefix
+        let point = ECKey.pointFromHex(publicKeyHex, ECurve(domain: .Secp256k1))
+        super.init(privateKey: UInt256(hexStringValue: privateKeyHex), publicKeyPoint: point)
+    }
+    
+    var privateKeyPrefixString: String {
+        let prefixHexString = String(NSString(format:"%2X", privateKeyPrefix))
     
         switch countElements(prefixHexString) {
         case 0:
@@ -35,7 +46,7 @@ class CoinKey : ECKey {
     }
     
     var wif : String {
-       let extendedKey = prefixString + privateKeyHexString
+       let extendedKey = privateKeyPrefixString + privateKeyHexString
         
         let hash1: NSData = SHA256.hexStringDigest(extendedKey)
         
@@ -53,7 +64,39 @@ class CoinKey : ECKey {
     }
     
     var publicAddress : String {
-        return "Wrong" // 
+        let sha256: NSData = SHA256.hexStringDigest(self.publicKeyHexString)
+        
+        let ripemd: NSData = RIPEMD.digest(sha256)
+        
+        var extenedRipemd = NSMutableData()
+            
+        let versionByte: [UInt8] = [publicKeyPrefix]
+        extenedRipemd.appendBytes(versionByte, length: 1)
+        extenedRipemd.appendBytes(ripemd.bytes, length: ripemd.length)
+            
+        let doubleSHA: String = SHA256.hexStringDigest(SHA256.digest(extenedRipemd))
+        
+        let checksum: String = (doubleSHA as NSString).substringWithRange(NSRange(location: 0, length: 8))
+
+        let hexAddress = extenedRipemd.toHexString() + checksum
+
+        let  base58 = BaseConverter.convertBase(hexAddress, fromBase: 16, toBase: 58)
+            
+            
+        var leadingOnes: String = ""
+        for var i=0; i < countElements(hexAddress); i += 2 {
+            let digit: String = (hexAddress as NSString).substringWithRange(NSRange(location: i, length: 2))
+            
+            if digit == "00" {
+                leadingOnes += "1"
+            } else {
+                break;
+            }
+        }
+        
+        println(leadingOnes + base58)
+
+        return leadingOnes + base58
     }
     
 
