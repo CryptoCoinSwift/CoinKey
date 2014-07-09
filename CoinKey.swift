@@ -28,6 +28,19 @@ class CoinKey : ECKey {
         let point = ECKey.pointFromHex(publicKeyHex, ECurve(domain: .Secp256k1))
         super.init(privateKey: UInt256(hexStringValue: privateKeyHex), publicKeyPoint: point)
     }
+
+    // Generates a random Bitcoin keypair
+    init() {
+        var key = ECKey.createRandom(ECurve(domain: .Secp256k1))
+        
+        self.privateKeyPrefix = 0x80
+        self.publicKeyPrefix = 0x00
+
+        super.init(privateKey: key.privateKey, publicKeyPoint: key.publicKeyPoint)
+    }
+
+    
+ 
     
     var privateKeyPrefixString: String {
         let prefixHexString = String(NSString(format:"%2X", privateKeyPrefix))
@@ -94,8 +107,6 @@ class CoinKey : ECKey {
             }
         }
         
-        println(leadingOnes + base58)
-
         return leadingOnes + base58
     }
     
