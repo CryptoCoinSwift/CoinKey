@@ -7,6 +7,7 @@
 //  Swift wrapper for CCHmac
 
 import Foundation
+import CommonCrypto
 
 struct SHA256 {
     static func digest (input : NSData) -> NSData {
