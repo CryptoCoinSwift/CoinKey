@@ -10,6 +10,7 @@
 import ECurveMac
 import UInt256Mac
 import RIPEMDmac
+import SHA256
 
 public class CoinKey : ECKey {
     let privateKeyPrefix: UInt8
