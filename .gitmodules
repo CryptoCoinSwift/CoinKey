@@ -4,3 +4,6 @@
 [submodule "RIPEMD-Swift"]
 	path = RIPEMD-Swift
 	url = git@github.com:CryptoCoinSwift/RIPEMD-Swift.git
+[submodule "SHA256-Swift"]
+	path = SHA256-Swift
+	url = git@github.com:CryptoCoinSwift/SHA256-Swift.git

@@ -11,18 +11,18 @@ import ECurveMac
 import UInt256Mac
 import RIPEMDmac
 
-class CoinKey : ECKey {
+public class CoinKey : ECKey {
     let privateKeyPrefix: UInt8
     let publicKeyPrefix: UInt8
 
     
-    init(_ privateKeyHex: String, privateKeyPrefix: UInt8, publicKeyPrefix: UInt8, skipPublicKeyGeneration: Bool = true) {
+    public init(_ privateKeyHex: String, privateKeyPrefix: UInt8, publicKeyPrefix: UInt8, skipPublicKeyGeneration: Bool = true) {
         self.privateKeyPrefix = privateKeyPrefix
         self.publicKeyPrefix = publicKeyPrefix
         super.init(UInt256(hexStringValue: privateKeyHex), ECurve(domain: .Secp256k1), skipPublicKeyGeneration: skipPublicKeyGeneration)
     }
     
-    init(_ privateKeyHex: String, _ publicKeyHex: String, privateKeyPrefix: UInt8, publicKeyPrefix: UInt8) {
+    public init(_ privateKeyHex: String, _ publicKeyHex: String, privateKeyPrefix: UInt8, publicKeyPrefix: UInt8) {
         self.privateKeyPrefix = privateKeyPrefix
         self.publicKeyPrefix = publicKeyPrefix
         let point = ECKey.pointFromHex(publicKeyHex, ECurve(domain: .Secp256k1))
@@ -30,7 +30,7 @@ class CoinKey : ECKey {
     }
 
     // Generates a random Bitcoin keypair
-    init() {
+    public init() {
         var key = ECKey.createRandom(ECurve(domain: .Secp256k1))
         
         self.privateKeyPrefix = 0x80
@@ -42,7 +42,7 @@ class CoinKey : ECKey {
     
  
     
-    var privateKeyPrefixString: String {
+    public var privateKeyPrefixString: String {
         let prefixHexString = String(NSString(format:"%2X", privateKeyPrefix))
     
         switch countElements(prefixHexString) {
@@ -58,7 +58,7 @@ class CoinKey : ECKey {
         }
     }
     
-    var wif : String {
+    public var wif : String {
        let extendedKey = privateKeyPrefixString + privateKeyHexString
         
         let hash1: NSData = SHA256.hexStringDigest(extendedKey)
@@ -76,7 +76,7 @@ class CoinKey : ECKey {
         return BaseConverter.convertBase(keyWithChecksum, fromBase: 16, toBase: 58)
     }
     
-    var publicAddress : String {
+    public var publicAddress : String {
         let sha256: NSData = SHA256.hexStringDigest(self.publicKeyHexString)
         
         let ripemd: NSData = RIPEMD.digest(sha256)
