@@ -7,9 +7,9 @@
 
 // Assuming all cryptocurrencies use Secp256k1. Move domain selection to subclass if that's not the case.
 
-import ECurveMac
-import UInt256Mac
-import RIPEMDmac
+import ECurve
+import UInt256
+import RIPEMD
 import SHA256
 
 public class CoinKey : ECKey {
