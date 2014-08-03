@@ -7,10 +7,16 @@
 
 // Assuming all cryptocurrencies use Secp256k1. Move domain selection to subclass if that's not the case.
 
+import Foundation
+
+#if os(iOS)
+//import RIPEMDi // This isn't working, so I'm including its Swift files directly
+#else
+import RIPEMD
 import ECurve
 import UInt256
-import RIPEMD
-import SHA256
+import SHA256Mac
+#endif
 
 public class CoinKey : ECKey {
     let privateKeyPrefix: UInt8
