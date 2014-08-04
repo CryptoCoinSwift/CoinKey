@@ -50,7 +50,7 @@ public class CoinKey : ECKey {
  
     
     public var privateKeyPrefixString: String {
-        let prefixHexString = String(NSString(format:"%2X", privateKeyPrefix))
+        let prefixHexString = String(format: NSString(format:"%2X", privateKeyPrefix))
     
         switch countElements(prefixHexString) {
         case 0:
