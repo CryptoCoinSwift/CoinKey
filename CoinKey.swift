@@ -37,11 +37,11 @@ public class CoinKey : ECKey {
     }
 
     // Generates a random Bitcoin keypair
-    public init() {
+    public init(privateKeyPrefix: UInt8, publicKeyPrefix: UInt8) {
         var key = ECKey.createRandom(ECurve(domain: .Secp256k1))
         
-        self.privateKeyPrefix = 0x80
-        self.publicKeyPrefix = 0x00
+        self.privateKeyPrefix = privateKeyPrefix
+        self.publicKeyPrefix = publicKeyPrefix
 
         super.init(privateKey: key.privateKey, publicKeyPoint: key.publicKeyPoint)
     }
