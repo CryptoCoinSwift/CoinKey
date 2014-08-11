@@ -7,6 +7,8 @@
 
 import Foundation
 import RIPEMD
+import ECurve
+import UInt256
 
 public protocol TransactionScriptItem {}
 public protocol TransactionStackItem {}
@@ -22,6 +24,7 @@ public enum Op : TransactionScriptItem  {
     case Equal
     case Dup
     case Hash160
+    case CheckSig
 }
 
 public struct TransactionScript {
@@ -106,7 +109,26 @@ public struct TransactionScript {
                         return false
                     }
 
-             
+                case .CheckSig:
+                    let pubKey = stack.pop()
+                    let signature = stack.pop()
+                    
+                    if pubKey is NSData && signature is NSData {
+                        let curve = ECurve(domain: .Secp256k1)
+                        let P = curve.point(pubKey as NSData)
+                        
+                        let (r,s) = ECKey.importDer(signature as NSData)
+                        
+                        let digest: UInt256 = 0x32 // TODO: use transaction
+                        
+                        stack.push(ECKey.verifySignature(digest, r: r, s: s, publicKey: P!))
+                    } else {
+                        assert(false, "Invalid script")
+                        return false
+                    }
+                    
+                    
+
                     
                 default:
                     assert(false, "Invalid script")
