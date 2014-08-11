@@ -5,12 +5,15 @@
 //  Created by Sjors Provoost on 11-08-14.
 //
 
+import Foundation
+
 public protocol TransactionScriptItem {}
 public protocol TransactionStackItem {}
 
 
 extension Int : TransactionScriptItem, TransactionStackItem {}
 extension Bool : TransactionStackItem {}
+extension NSData : TransactionScriptItem, TransactionStackItem {}
 
 
 public enum Op : TransactionScriptItem  {
@@ -67,6 +70,8 @@ public struct TransactionScript {
         for item in items {
             if item is Int {
                 stack.push(item as Int)
+            } else if item is NSData {
+                stack.push(item as NSData)
             } else if item is Op {
                 switch item as Op {
                 case .Add:
@@ -75,8 +80,21 @@ public struct TransactionScript {
                 case .Dup:
                     stack.push(stack.top)
                 case .Equal:
-                    let (a,b) = stack.popTwoIntegers()
-                    stack.push(a == b)
+                    let a = stack.pop()
+                    let b = stack.pop()
+                    
+                    if a is Int && b is Int {
+                        stack.push(a as Int == b as Int)
+
+                    } else if a is NSData && b is NSData {
+                        stack.push((a as NSData).isEqualToData(b as NSData))
+
+                    } else {
+                        assert(false, "Invalid script")
+ 
+                    }
+             
+                    
                 default:
                     assert(false, "Invalid script")
                 }

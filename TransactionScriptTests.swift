@@ -37,6 +37,15 @@ class TransactionScriptTests: XCTestCase {
         XCTAssertTrue(script.evaluate(), "Script should pass")
         
     }
+    
+    func testNSData() {
+        var bytes: [UInt8] = [0x20, 0x20]
+        let data = NSData(bytes: &bytes, length: 2)
+        
+        var script = TransactionScript([data, Op.Dup, Op.Equal])
+        
+        XCTAssertTrue(script.evaluate(), "Script should pass")
+    }
 
 
 }
