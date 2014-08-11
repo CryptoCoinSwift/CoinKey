@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import RIPEMD
 
 public protocol TransactionScriptItem {}
 public protocol TransactionStackItem {}
@@ -20,6 +21,7 @@ public enum Op : TransactionScriptItem  {
     case Add
     case Equal
     case Dup
+    case Hash160
 }
 
 public struct TransactionScript {
@@ -93,6 +95,17 @@ public struct TransactionScript {
                         assert(false, "Invalid script")
  
                     }
+                case .Hash160:
+                    let message = stack.pop()
+                    
+                    if message is NSData {
+                        let digest: NSData = RIPEMD.digest(message as NSData)
+                        stack.push(digest)
+                    } else {
+                        assert(false, "Invalid script")
+                        return false
+                    }
+
              
                     
                 default:
