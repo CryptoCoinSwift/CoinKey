@@ -31,6 +31,12 @@ class TransactionScriptTests: XCTestCase {
 
     }
 
+    func testDup() {
+        var script = TransactionScript([2, Op.Dup, Op.Equal])
+        
+        XCTAssertTrue(script.evaluate(), "Script should pass")
+        
+    }
 
 
 }

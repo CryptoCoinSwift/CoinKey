@@ -16,6 +16,7 @@ extension Bool : TransactionStackItem {}
 public enum Op : TransactionScriptItem  {
     case Add
     case Equal
+    case Dup
 }
 
 public struct TransactionScript {
@@ -23,7 +24,7 @@ public struct TransactionScript {
     struct Stack {
         var stack: [TransactionStackItem] = []
 
-        mutating func popTwoIntegers () -> (Int, Int) {
+        mutating func popTwoIntegers () -> (Int , Int) {
             assert(stack.count >= 2, "Not enough stuff on the stack")
             let a = stack.removeLast()
             let b = stack.removeLast()
@@ -40,6 +41,12 @@ public struct TransactionScript {
         
         mutating func pop () -> (item: TransactionStackItem) {
             return stack.removeLast()
+        }
+        
+        var top: TransactionStackItem {
+            assert(stack.count >= 1, "Not enough stuff on the stack")
+
+            return stack.first!
         }
         
         var count: Int {
@@ -65,6 +72,8 @@ public struct TransactionScript {
                 case .Add:
                     let (a,b) = stack.popTwoIntegers()
                      stack.push(a + b)
+                case .Dup:
+                    stack.push(stack.top)
                 case .Equal:
                     let (a,b) = stack.popTwoIntegers()
                     stack.push(a == b)
