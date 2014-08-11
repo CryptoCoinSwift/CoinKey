@@ -20,6 +20,32 @@ public enum Op : TransactionScriptItem  {
 
 public struct TransactionScript {
 
+    struct Stack {
+        var stack: [TransactionStackItem] = []
+
+        mutating func popTwoIntegers () -> (Int, Int) {
+            assert(stack.count >= 2, "Not enough stuff on the stack")
+            let a = stack.removeLast()
+            let b = stack.removeLast()
+            
+            assert(a is Int && b is Int, "Looking for two integer")
+            
+            return (a as Int, b as Int)
+            
+        }
+        
+        mutating func push (item: TransactionStackItem) {
+            stack.append(item)
+        }
+        
+        mutating func pop () -> (item: TransactionStackItem) {
+            return stack.removeLast()
+        }
+        
+        var count: Int {
+            return stack.count
+        }
+    }
     
     let items: [TransactionScriptItem]
     
@@ -28,29 +54,20 @@ public struct TransactionScript {
     }
     
     public func evaluate() -> Bool {
-        var stack: [TransactionStackItem] = []
+        
+        var stack = Stack()
         
         for item in items {
             if item is Int {
-                stack.append(item as Int)
+                stack.push(item as Int)
             } else if item is Op {
                 switch item as Op {
                 case .Add:
-                    assert(stack.count >= 2, "Not enough stuff on the stack to add")
-                    let a = stack.removeLast()
-                    let b = stack.removeLast()
-                    
-                    assert(a is Int && b is Int, "Can only add integers")
-                    
-                    stack.append((a as Int) + (b as Int))
+                    let (a,b) = stack.popTwoIntegers()
+                     stack.push(a + b)
                 case .Equal:
-                    assert(stack.count >= 2, "Not enough stuff on the stack to compare")
-                    let a = stack.removeLast()
-                    let b = stack.removeLast()
-                    
-                    assert(a is Int && b is Int, "Can only compare integers")
-                    
-                    stack.append((a as Int) == (b as Int))
+                    let (a,b) = stack.popTwoIntegers()
+                    stack.push(a == b)
                 default:
                     assert(false, "Invalid script")
                 }
@@ -61,12 +78,16 @@ public struct TransactionScript {
         }
         
         if stack.count == 1 {
-            if stack.first! is Bool {
-                return (stack.first! as Bool)
+            let item = stack.pop()
+            
+            if item is Bool {
+                return (item as Bool)
             }
         }
         
         return false
         
     }
+    
+
 }
