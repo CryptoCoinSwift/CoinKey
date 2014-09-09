@@ -47,7 +47,7 @@ public struct TransactionScript {
             stack.append(item)
         }
         
-        mutating func pop () -> (item: TransactionStackItem) {
+        mutating func pop () -> (TransactionStackItem) {
             return stack.removeLast()
         }
         

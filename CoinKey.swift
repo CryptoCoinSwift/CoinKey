@@ -74,7 +74,7 @@ public class CoinKey : ECKey {
         
         var checksum: String = ""
         for char in hash2 {
-            checksum += char
+            checksum += String(char)
             if countElements(checksum) == 8 { break; }
         }
         
