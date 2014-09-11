@@ -37,7 +37,7 @@ public struct TransactionScript {
             let a = stack.removeLast()
             let b = stack.removeLast()
             
-            assert(a is Int && b is Int, "Looking for two integer")
+            assert(a is Int && b is Int, "Looking for two integers")
             
             return (a as Int, b as Int)
             
@@ -112,16 +112,25 @@ public struct TransactionScript {
                 case .CheckSig:
                     let pubKey = stack.pop()
                     let signature = stack.pop()
-                    
+
                     if pubKey is NSData && signature is NSData {
                         let curve = ECurve(domain: .Secp256k1)
                         let P = curve.point(pubKey as NSData)
                         
-                        let (r,s) = ECKey.importDer(signature as NSData)
-                        
-                        let digest: UInt256 = 0x32 // TODO: use transaction
-                        
-                        stack.push(ECKey.verifySignature(digest, r: r, s: s, publicKey: P!))
+                        if let theP = P {
+                            let (r,s) = ECKey.importDer(signature as NSData)
+                            let digest: UInt256 = 0x32 // TODO: use transaction
+                            
+                            // This line crashes the compiler with a segfault. This workaround fixes the crash, but unless you use -O instead of -Ounchecked, you'll get segfaults in other places.
+                            
+                            let result: Bool = true // ECKey.verifySignature(digest, r: r, s: s, publicKey: theP)
+                            
+                            stack.push(result)
+                        } else {
+                            assert(false, "Failed import")
+                        }
+
+
                     } else {
                         assert(false, "Invalid script")
                         return false
